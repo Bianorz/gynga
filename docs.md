@@ -7,18 +7,18 @@
 
 ### Adicionar repositório da Adafruit
 - curl -sLS https://apt.adafruit.com/add | sudo bash
-###Instalar o avrdude
+### Instalar o avrdude
 - sudo apt-get install avrdude
-###Verificar instalação
+### Verificar instalação
 - avrdude -v
-###Conectar cabos VCC, GROUND, MOSI, MISO, SCK e RESET do arduino/avr nos GPIO da raspberry. Nesse exemplo faremos a seguinte conexão:
+### Conectar cabos VCC, GROUND, MOSI, MISO, SCK e RESET do arduino/avr nos GPIO da raspberry. Nesse exemplo faremos a seguinte conexão:
 - Arduino ICSP VCC para Raspberry Pi 5 volt pin.
 - Arduino ICSP GND para Raspberry Pi ground pin.
 - Arduino ICSP RESET para Raspberry Pi GPIO #12.
 - Arduino ICSP SCK para Raspberry Pi GPIO #24.
 - Arduino ICSP MOSI para Raspberry Pi GPIO #23.
 - Arduino ICSP MISO para Raspberry Pi GPIO #18.
-###É necessário editar um arquivo .conf especificando quais os pinos da raspberry serão utilizados para programar o arduino/avr.
+### É necessário editar um arquivo .conf especificando quais os pinos da raspberry serão utilizados para programar o arduino/avr.
 - cp /etc/avrdude.conf ~/avrdude_gpio.conf <br />
 - nano ~/avrdude_gpio.conf
 ### Quando o editor abrir o arquivo, desça até o final dele e adicione o código abaixo
