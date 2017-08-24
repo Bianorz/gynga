@@ -46,7 +46,7 @@
 - sudo apt-get install i2c-tools
 ### Autorizar acesso aos dispositivos I2C pelo usuário pi
 - sudo adduser pi i2c
-### Ative o I2C na raspberry
+### Ativar o I2C na raspberry
 
 - sudo raspi-config
 - Selecione opção 8 - *Advanced Options*
@@ -164,4 +164,8 @@ int main(void) {
 - avr-objcopy -O ihex -R .eeprom led led.hex && rm led && rm led.o
 ## Instalação do bootloader do Arduino utilizando avr-dude
 
-### Baixe o arquivo do bootloader: 
+### Baixe o arquivo do bootloader: [optiboot.hex](https://raw.githubusercontent.com/Bianorz/gynga/master/codes/led.hex) 
+### Programe utilizando ISP (ex: raspberry+avr/arduino) com os seguintes comandos
+- sudo avrdude -b 19200 -p atmega328p -C ~/avrdude_gpio.conf -c pi_1 -v -U efuse:w:0x05:m -U hfuse:w:0xD6:m -U lfuse:w:0xFF:m
+- sudo avrdude -b 19200 -p atmega328p -C ~/avrdude_gpio.conf -c pi_1 -v -U flash:w:optiboot.hex -U lock:w:0x0F:m
+### Com isso seu arduino poderá ser programado pela porta usb novamente
