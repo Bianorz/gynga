@@ -131,3 +131,37 @@ if __name__ == '__main__':
         gpio.cleanup()
         sys.exit(0)
 ```
+## Compilar código C e gerar arquivo HEX utilizando gcc-avr 
+
+### Instalação do compilador e referências
+- sudo apt-get install avrdude-doc binutils-avr avr-libc gcc-avr
+### Neste exemplo será gerado o arquivo HEX do seguinte código:
+```c
+#include <avr/io.h>                        
+#include <util/delay.h>                    
+
+int main(void) {
+
+  // Configurar PB5 (Digital 13 no arduino) como saída
+  DDRB |= 0b00100000;            
+ 
+  while (1) {
+
+    PORTB = 0b00100000;          // Ligar PB5
+    _delay_ms(250);                                           
+
+    PORTB = 0b00000000;          // Desligar PB5
+    _delay_ms(250);                                          
+
+  }                                                  
+  return 0;                            
+}
+```
+### Substitua led.c e led.hex para os nomes dos arquivos que você deseja compilar(.c) e criar(.hex):
+
+- avr-gcc -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o led.o led.c
+- avr-gcc -mmcu=atmega328p led.o -o led
+- avr-objcopy -O ihex -R .eeprom led led.hex && rm led && rm led.o
+## Instalação do bootloader do Arduino utilizando avr-dude
+
+### Baixe o arquivo do bootloader: 
