@@ -162,7 +162,7 @@ int main(void) {
 - avr-gcc -Os -DF_CPU=16000000UL -mmcu=atmega328p -c -o led.o led.c
 - avr-gcc -mmcu=atmega328p led.o -o led
 - avr-objcopy -O ihex -R .eeprom led led.hex && rm led && rm led.o
-## Instalação do bootloader do Arduino utilizando avr-dude
+## Instalação do Optiboot no Arduino utilizando avr-dude
 
 ### Baixe o arquivo do bootloader: [optiboot.hex](https://raw.githubusercontent.com/Bianorz/gynga/master/codes/led.hex) 
 ### Programe utilizando ISP (ex: raspberry+avr/arduino) com os seguintes comandos
