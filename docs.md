@@ -4,7 +4,8 @@
 <span style="color:red">ATENÇÃO, GRAVAR O CÓDIGO ATRAVÉS DO ISP APAGA O BOOTLOADER DO ARDUINO/AVR!
 </span> <br />É mostrado uma forma de recuperar o bootloader mais adiante no texto.
 
-###Adicionar repositório da Adafruit
+
+### Adicionar repositório da Adafruit
 - curl -sLS https://apt.adafruit.com/add | sudo bash
 ###Instalar o avrdude
 - sudo apt-get install avrdude
