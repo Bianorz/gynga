@@ -2,7 +2,7 @@
 
 ## Configuração Raspberry PI 2 como ISP AVR Programmer
 <span style="color:red">ATENÇÃO, GRAVAR O CÓDIGO ATRAVÉS DO ISP APAGA O BOOTLOADER DO ARDUINO/AVR!
-</span> <br />É mostrado uma forma de recuperar o bootloader mais adiante no texto.
+</span> <br />Para recuperar o bootloader, siga esse [link](https://github.com/Bianorz/gynga/blob/master/docs.md#instala%C3%A7%C3%A3o-do-optiboot-no-arduino-utilizando-avr-dude). 
 
 
 ### Adicionar repositório da Adafruit
