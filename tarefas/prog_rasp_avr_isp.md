@@ -43,4 +43,4 @@ O arquivo abaixo deve ser editado para adicionar as configurações que serão u
       miso  = 18;
     ;
  
-Com isso o programador está configurado, você pode realizar um teste da programação seguindo este [link](https://github.com/Bianorz/gynga/blob/master/tarefas).
+Com isso o programador está configurado, você pode realizar um teste da programação seguindo este [link](https://github.com/Bianorz/gynga/blob/master/tarefas/comp_c_hex.md).
