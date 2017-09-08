@@ -1,6 +1,6 @@
 ## Configuração Raspberry PI 2 como ISP AVR Programmer
 <span style="color:red">ATENÇÃO, GRAVAR O CÓDIGO ATRAVÉS DO ISP APAGA O BOOTLOADER DO ARDUINO/AVR!
-</span> <br />Para recuperar o bootloader, siga esse [link](https://github.com/Bianorz/gynga/blob/master/docs.md#instala%C3%A7%C3%A3o-do-optiboot-no-arduino-utilizando-avr-dude). 
+</span> <br />Para recuperar o bootloader, siga esse [link](https://github.com/Bianorz/gynga/blob/master/tarefas/install_bootloader.md). 
 
 
 ### Adicionar repositório da Adafruit
@@ -43,4 +43,4 @@ O arquivo abaixo deve ser editado para adicionar as configurações que serão u
       miso  = 18;
     ;
  
-Com isso o programador está configurado, você pode realizar um teste da programação seguindo este LINK
+Com isso o programador está configurado, você pode realizar um teste da programação seguindo este [link](https://github.com/Bianorz/gynga/blob/master/tarefas).
