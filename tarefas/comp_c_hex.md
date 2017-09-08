@@ -40,7 +40,7 @@ Converter o arquivo led, para formato .hex. Flags: -O formato do arquivo de saí
 
 ### Processo de Gravação
 
-Com o arquivo .hex gerado é possível realizar a sua gravação no microcontrolador. Será utilizado como gravador um Raspberry Pi com ISP, o tutorial para configuração do raspberry como gravador está disponível nesse LINK.
+Com o arquivo .hex gerado é possível realizar a sua gravação no microcontrolador. Será utilizado como gravador um Raspberry Pi com ISP, o tutorial para configuração do raspberry como gravador está disponível nesse [link](https://github.com/Bianorz/gynga/blob/master/tarefas/prog_rasp_avr_isp.md)
 Primeiramente testaremos a comunicação entre o avr e o gravador raspberry com esse comando:
 
 -  sudo avrdude -p atmega328p -C ~/avrdude_gpio.conf -c pi_1 -v
