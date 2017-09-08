@@ -1,4 +1,4 @@
-## Compilar código C e gerar arquivo HEX utilizando gcc-avr 
+## Compilar código c, gerar arquivo HEX utilizando gcc-avr e programar no microcontrolador com avr-dude
 
 Nesta tarefa será demonstrado o passo a passo para realizar a compilação de um código em C utilizando o compilador gcc-avr, criação do arquivo .hex e gravação do .hex em um microcontrolador ATMEGA328 utilizando o avrdude.
 ### Instalação do compilador e referências
