@@ -82,7 +82,7 @@ off all status codes can be found in pg 218,219,221,224,227 and 228 from the AtM
 		i = 0;
 		j=0;
 		break;
-
+	case 0xA8:      // 0xA8: SLA+R received, ACK returned
 	case 0xB8:     // 0xB8: data transmitted, ACK received
 		if (j < BUFFSIZE){
 		TWDR = var.b[j];      // Store data in TWDR register
@@ -123,7 +123,7 @@ var.v = 5.2; Float number that is sent when the master request data
 
 */
 int main(void) {
-	var.v = 5.2;
+	var.v = 5.92;
 	DDRB = 0xFF;     
 	PORTB = 0x00;
 	enableI2c(SLAVEADDRESS);

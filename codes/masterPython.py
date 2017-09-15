@@ -1,4 +1,4 @@
-import RPi.GPIO as gpio
+
 import smbus
 import time
 import sys
@@ -16,16 +16,10 @@ def ints_to_float(numbers):
     return struct.unpack('<f', struct.pack('4B', *numbers))[0]  
 
 def main():
-    gpio.setmode(gpio.BCM)
-    gpio.setup(17, gpio.OUT)
-    status = False
-    dataRec = [0,0,0,0]
     while 1:
-        gpio.output(17, status)
-	bus.write_i2c_block_data(address, 0b0 , [0b1, 0b10,0b11])
+       	bus.write_i2c_block_data(address, 0b1 , [0b11, 0b111,0b1111])
 	time.sleep(1)
-	for i in range(0,4):
-	    dataRec[i] = bus.read_byte(address)
+	dataRec = bus.read_i2c_block_data(address, 0, 4)
 	n_float = ints_to_float(dataRec)
 	print("%.2f" % n_float)
 if __name__ == '__main__':
@@ -33,5 +27,4 @@ if __name__ == '__main__':
         main()
     except KeyboardInterrupt:
         print 'Interrupted'
-        gpio.cleanup()
         sys.exit(0)
