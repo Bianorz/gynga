@@ -3,8 +3,6 @@
 #include <compat/twi.h>
 #include <avr/interrupt.h>
 
-// MCP23008 8 Bit I/O Extention Simulation Address and Register Address
-
 #define BUFFSIZE 0x04
 #define SLAVEADDRESS 0X05
 
@@ -17,10 +15,6 @@ Union var;
 uint8_t dataRead[BUFFSIZE] = {0}; // buff onde será armazenado o dado recebido
 //uint8_t dataWrite[BUFFSIZE] = {0}; // buff onde será armazenado o dado enviado
 uint8_t i=0,j=0; // contador
-
-
-
-
 
 ISR(TWI_vect) {
 	static unsigned char i2c_state;
@@ -85,37 +79,18 @@ void enableI2c(uint8_t slave_address) {
 }
 
 int main(void) {
-
-//	dataWrite = {0b11,0b111,0b1111,0b11111};
 	var.v = 5.2;
 	DDRB = 0xFF;      // Set PORTB: PB0=Input, Others as Output
 	PORTB = 0x00;
 	DDRD = 0xFF;      // Set PORTD to Output
 	PORTD = 0x00;     // Set All PORTD to Low
 	enableI2c(SLAVEADDRESS);
-	// Initial I2C Slave
-	//TWAR = 0b10010000; // Set I2C Address, Ignore I2C General Address 0x00
-	//TWDR = 0x00;                 // Default Initial Value
-
-	// Start Slave Listening: Clear TWINT Flag, Enable ACK, Enable TWI, TWI Interrupt Enable
-	//TWCR = (1 << TWINT) | (1 << TWEA) | (1 << TWEN) | (1 << TWIE);
-
-	// Enable Global Interrupt
-
-	// Initial Variable Used
 	uint8_t cont = 0;
 	for (;;) {
-	
-	for (cont = 0;cont <=3;cont++){
-	PORTB = dataRead[cont];
-	_delay_ms(250);
-	}
-	
-	//	for (a = 0; a <= 3; a++) {
-	//		PORTB = dataRead[a];
-	//		_delay_ms(250);
-	//	}
-
+		for (cont = 0;cont <=3;cont++){
+		PORTB = dataRead[cont];
+		_delay_ms(250);
+		}
 	}
 	return 0;
 }
