@@ -1,21 +1,63 @@
+/*
+
+This code describes the configuration of an AtMega328P acting as a Slave Device using the I2C Protocol. A float point is sent while PORTB
+flashes the data received by the master device
+Details about how the AtMega deals with I2C can be found here:
+* Book | Make AVR Programming, pg 359
+* Online | Transforming your AVR Microcontroller to the I2C or TWI Slave I/O Expander Project, http://www.ermicro.com/blog/?p=1239
+* Online | How to use I2C-bus on the Atmel AVR Microcontroller, http://www.ermicro.com/blog/?p=744
+* Datasheet | AtMega328P, pg 206 
+*/
+
 #include <avr/io.h>
 #include <util/delay.h>
 #include <compat/twi.h>
 #include <avr/interrupt.h>
 
+/*
+BUFFSIZE: Defines the size of the data that will be read/sent, in this code the packets will have 4 bytes long.
+SLAVEADDRESS: Address of the slave device
+*/
 #define BUFFSIZE 0x04
 #define SLAVEADDRESS 0X05
+/*
+The Union is defined to use the same memory location for different data types, in this case it's used to store a float point, more details can be found here https://www.tutorialspoint.com/cprogramming/c_unions.htm
 
+Warning: typedef is mandatory in C and optional in  C++. Example:
+C++:		
+union floatByte {
+  float v;
+  uint8_t b[4];
+};
+
+C: 
+typedef union{
+  float v;
+  uint8_t b[4];
+} floatByte;
+
+*/
 typedef union{
   float v;
   uint8_t b[4];
 } Union;
-
+/*
+var: variable where the float point to be sent is stored
+dataRead: Array where the received bytes are stored
+i,j: Counters used for indexing the arrays to be sent/received
+*/
 Union var;
-uint8_t dataRead[BUFFSIZE] = {0}; // buff onde será armazenado o dado recebido
-//uint8_t dataWrite[BUFFSIZE] = {0}; // buff onde será armazenado o dado enviado
-uint8_t i=0,j=0; // contador
+uint8_t dataRead[BUFFSIZE] = {0};
+uint8_t i=0,j=0;
 
+/*
+Considerations about the ISR:
+ISRs are special routines that run when their interrupt flag is set, and their interrupt
+vector is called. To enable it we must enable the global interrupts using the function sei(), and set the I2C interrupt TWIE
+TWI_vect is the macro that refers to the I2C Interruption
+More details can be found here: Book | Make AVR Programming, pg 153
+
+*/
 ISR(TWI_vect) {
 	static unsigned char i2c_state;
 	unsigned char twi_status;
