@@ -62,55 +62,51 @@ ISR(TWI_vect) {
 	static unsigned char i2c_state;
 	unsigned char twi_status;
 
-	// Disable Global Interrupt
+	// Disable Global Interrupt, to assure that this interruption won't be stopped by other interruptions
 	cli();
 
-	// Get TWI Status Register, mask the prescaler bits (TWPS1,TWPS0)
-	twi_status = TWSR & 0xF8;
+/*TWSR & 0xF8 is used to get TWI Status Register, only the 5 MSB 0b11111000, used to know what's happening in the i2c peripheral
+We will be interested in three different states, when we receive data (status = 0x80), when we transmitt 
+data(status = 0xA0) and when the master stops the communication (status = 0xA0). A complete description
+off all status codes can be found in pg 218,219,221,224,227 and 228 from the AtMega328P datasheet
+*/	twi_status = TWSR & 0xF8;
    switch (twi_status) {
-	case TW_SR_SLA_ACK:      // 0x60: SLA+W received, ACK returned
-		//i2c_state = 0;          // Start I2C State for Register Address required
-		TWCR |= (1 << TWINT);    // Clear TWINT Flag
-		break;
-
-	case TW_SR_DATA_ACK:     // 0x80: data received, ACK returned
-		//PORTB = TWDR;
+	case 0x80:     // 0x80: data received, ACK returned
 		if (i < BUFFSIZE) {
 			dataRead[i] = TWDR;
 			i = i + 1;
 		}
-
-		TWCR |= (1 << TWINT);    // Clear TWINT Flag
 		break;
 
-	case TW_SR_STOP: // 0xA0: stop or repeated start condition received while selected
+	case 0xA0: // 0xA0: stop or repeated start condition received while selected
 		i = 0;
 		j=0;
-		TWCR |= (1 << TWINT);    // Clear TWINT Flag
 		break;
 
-	case TW_ST_SLA_ACK:      // 0xA8: SLA+R received, ACK returned
-	case TW_ST_DATA_ACK:     // 0xB8: data transmitted, ACK received
+	case 0xB8:     // 0xB8: data transmitted, ACK received
 		if (j < BUFFSIZE){
 		TWDR = var.b[j];      // Store data in TWDR register
 		j = j +1;
 		}
-		//i2c_state = 0;	      // Reset I2C State
-		TWCR |= (1 << TWINT);    // Clear TWINT Flag
-		break;
-
-	case TW_ST_DATA_NACK:    // 0xC0: data transmitted, NACK received
-	case TW_ST_LAST_DATA:    // 0xC8: last data byte transmitted, ACK received
-	case TW_BUS_ERROR:       // 0x00: illegal start or stop condition
-	default:
-		TWCR |= (1 << TWINT);    // Clear TWINT Flag
-		//i2c_state = 0;         // Back to the Begining State
+		break;	
 	}
-
+	// Every time a byte is transfered across the I2C line, the TWINT bit is set by hardware, we need to clear it to became available for a new connection. We clear it, by putting '1' in the TWINT bit (clear by putting '1' is confusing but it's like AVR implemented this operation)
+	TWCR |= (1 << TWINT);    // Clear TWINT Flag
 	// Enable Global Interrupt
 	sei();
 }
+/*
 
+To enable the I2C peripheral as slave device we must do the following operations:
+gen_call = 0; To make the device responds only by its address
+TWAR = ((slave_address << 1) | gen_call << 1); Load the slave address and the gen_call in TWAR
+TWDR = 0; TWDR is the data register, it's cleared just to assure that all data from previous communications are erased
+1<<TWINT; To clear the TWINT register and let the I2C lines available
+1<<TWEA; To enable an ack message in response of every received data
+1<<TWEN; To enable the I2C peripheral
+1<<TWIE; To enable the i2c interruption
+sei(); to enable the global interruptions
+*/
 
 void enableI2c(uint8_t slave_address) {
 	uint8_t gen_call = 0; // gen_call desabilitada
@@ -119,13 +115,17 @@ void enableI2c(uint8_t slave_address) {
 	TWCR = (1 << TWINT) | (1 << TWEA) | (1 << TWEN) | (1 << TWIE);
 	sei();
 }
+/*
+In the main loop we enable the i2c using the function 'enableI2c(SLAVEADDRESS)', this means that every time the master starts a communication for SLAVEADDRESS it will trigger a interruption. In the for loop we just flash the data sent by the master in PORTB.
+var.v = 5.2; Float number that is sent when the master request data
 
+
+
+*/
 int main(void) {
 	var.v = 5.2;
-	DDRB = 0xFF;      // Set PORTB: PB0=Input, Others as Output
+	DDRB = 0xFF;     
 	PORTB = 0x00;
-	DDRD = 0xFF;      // Set PORTD to Output
-	PORTD = 0x00;     // Set All PORTD to Low
 	enableI2c(SLAVEADDRESS);
 	uint8_t cont = 0;
 	for (;;) {
