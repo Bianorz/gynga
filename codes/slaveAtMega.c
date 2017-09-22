@@ -98,7 +98,7 @@ off all status codes can be found in pg 218,219,221,224,227 and 228 from the AtM
 /*
 
 To enable the I2C peripheral as slave device we must do the following operations:
-gen_call = 0; To make the device responds only by its address
+gen_call = 0; To make the device responds only by its address, it's called the general call, details can be found in https://www.i2c-bus.org/addressing/general-call-address/
 TWAR = ((slave_address << 1) | gen_call << 1); Load the slave address and the gen_call in TWAR
 TWDR = 0; TWDR is the data register, it's cleared just to assure that all data from previous communications are erased
 1<<TWINT; To clear the TWINT register and let the I2C lines available
@@ -109,9 +109,9 @@ sei(); to enable the global interruptions
 */
 
 void enableI2c(uint8_t slave_address) {
-	uint8_t gen_call = 0; // gen_call desabilitada
+	uint8_t gen_call = 0;
 	TWAR = ((slave_address << 1) | gen_call << 1);
-	TWDR = 0x00;                 // Default Initial Value
+	TWDR = 0x00;
 	TWCR = (1 << TWINT) | (1 << TWEA) | (1 << TWEN) | (1 << TWIE);
 	sei();
 }
