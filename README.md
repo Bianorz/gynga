@@ -1,5 +1,4 @@
-# Repositório Gynga - UFRN
-
+# Gynga Energia - Internship 
 
 - [Configuração Raspberry PI 2 como ISP AVR Programmer](https://github.com/Bianorz/gynga/blob/master/tarefas/prog_rasp_avr_isp.md) <br />
 - [Comunicação I2C entre Raspberry e Arduino](https://github.com/Bianorz/gynga/blob/master/tarefas/comun_i2c_rasp_ard.md) <br />
